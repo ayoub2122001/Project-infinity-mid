@@ -1,0 +1,12 @@
+body {
+    background: #F5F5F5;
+    overflow : auto !important;
+}
+.tb-table{
+    
+    gap: 12.6px;
+    border: 1.26039px solid #CBCBCB;
+    border-radius: 12.6039px;
+    width: 1271.73px;
+    height: 200.56px;
+}
