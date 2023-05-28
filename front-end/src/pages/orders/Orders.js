@@ -50,7 +50,9 @@ function Orders() {
         <div className='header '>
             <h1 className='Order-h1'>Orders</h1>
             <div className='buttons'>
-              <button className='type-1'>Generate Facture</button>
+              <Link to='/invoice'>
+                <button className='type-1'>Generate Facture</button>
+              </Link>
               <button className='type-1'>Generate  Delivery Note</button>
               <Link to='/addOrders'>
                 <button className='type-2'><span className='incon-span'><AiOutlinePlus /></span>New Orders</button>
@@ -92,6 +94,9 @@ function Orders() {
                 <button className='btn btn-danger' onClick={()=>deleteCommande(command._id)}><MdDeleteForever /></button>
                 <Link to={`/updateOrders/${command._id}`}>
                   <button className='btn btn-success'><MdModeEditOutline /></button>
+                </Link>
+                <Link to={`/invoice/${command._id}`}>
+                  <button className='btn btn-success'>imprimer</button>
                 </Link>
               </td>
             </tr>

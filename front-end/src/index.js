@@ -14,12 +14,12 @@ import Home from "./pages/home/Home";
 import Navbar from "./components/navbar/Navbar";
 import "./App.css";
 import Exponses from "./pages/exponses/Exponses";
-import Invoice from "./components/Invoice";
 import Orders from "./pages/orders/Orders";
 import Login from "./pages/login/Login";
 import Incomes from "./pages/incomes/Incomes";
 import AddOrders from "./pages/orders/AddOrders";
 import UpdateOrders from "./pages/orders/UpdateOreder";
+import Invoice from "./components/invoices/Invoice";
 const AppLayout = () => (
   <>
     <Navbar />
@@ -50,10 +50,6 @@ const router = createBrowserRouter([
         element: <Incomes />,
       },
       {
-        path: "invoice",
-        element: <Invoice />,
-      },
-      {
         path: "exponses",
         element: <Exponses />,
       },
@@ -64,8 +60,12 @@ const router = createBrowserRouter([
       {
         path: "updateOrders/:id",
         element: <UpdateOrders />,
+      },
+      {
+        path: "invoice/:id",
+        element: <Invoice />
       }
-    ],
+    ]
   }
 ]);
 // export default function App() {
