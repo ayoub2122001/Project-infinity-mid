@@ -3,6 +3,8 @@
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
+    margin-top: 50px;
+    padding-bottom: 50px;
 }
 
 .invoice-header {
@@ -48,8 +50,57 @@
 .invoice-total strong {
     margin-left: 10px;
 }
+.type-1{
+    width: 200px;
+    height: 40px;
+    border: 2px solid #7400B8;
+    border-radius: 5px;
+    color: #7400B8;
+    background-color: rgb(255, 255, 255);
+    font-family: 'Arial';
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 36px;
+    margin: 4px;
+}
+.type-2{
+    width: 200px;
+    height: 40px;
+    border: 2px solid #7400B8;
+    border-radius: 5px;
+    color: #7400B8;
+    background-color: rgb(255, 255, 255);
+    font-family: 'Arial';
+    line-height: normal;
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 5px;
+    padding: 0;
+    margin: 0 ;
+    gap: 20px;
+}
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    text-decoration: none;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+button:active{
+    border:3px solid #000000 ;
+    background-color: rgb(223, 223, 223) ;
+}
 @media print {
-    button {
+    .buttons {
         display: none;
     }
     .navbar{

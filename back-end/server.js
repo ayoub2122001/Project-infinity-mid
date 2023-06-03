@@ -53,6 +53,12 @@ app.get('/api/articles', (req, res) => {
     .then(articles => res.json(articles))
     .catch(error => console.log(error));
 });
+// get the single Article
+app.get('/api/articles/:id', (req, res) => {
+  ArticleModel.findById(req.params.id)
+    .then(articles => res.json(articles))
+    .catch(error => console.log(error));
+});
 // Get all commands
 app.get('/api/commands', async (req, res) => {
   const filter = {};
@@ -79,7 +85,7 @@ app.post('/api/commandes', (req, res) => {
 });
 // get the single commande
 app.get('/api/commandes/:id', async (req, res) => {
-  const order = await CommandeModel.findById(req.params.id);
+  const order = await CommandeModel.findById(req.params.id).populate('lignes_commande.id_article');
   if (order) {
     const transformedOrder = {
       ...order._doc,
@@ -95,15 +101,6 @@ app.get('/api/commandes/:id', async (req, res) => {
 app.put('/api/commandes/:id', async (req, res) => {
   try {
     const order = await CommandeModel.findById(req.params.id);
-    // if (!order) {
-    //   return res.status(404).json({ message: 'Order not found' });
-    // }
-    // // Update the order details
-    // order.nom_client = req.body.nom_client;
-    // order.date_livraison = req.body.date_livraison;
-    // order.date_commande = req.body.date_commande;
-    // order.montant_total = req.body.montant_total;
-    // order.lignes_commande = req.body.lignes_commande;
     if (!order) return res.status(404).json({ message: 'Order not found' });
     Object.assign(order, req.body);
     const updatedOrder = await order.save();
@@ -132,13 +129,6 @@ app.get('/api/incomes', (req, res) => {
   if (req.query.search) {
     filter.costumer_name = { $regex: req.query.search, $options: 'i' };
   }
-  // if (req.query.date) {
-  //   const start = new Date(req.query.date);
-  //   start.setHours(0, 0, 0, 0);
-  //   const end = new Date(req.query.date);
-  //   end.setHours(23, 59, 59, 999);
-  //   filter.date_Income = { $gte: start, $lte: end };
-  // }
   if (req.query.date && req.query.endDate) {
     const start = new Date(req.query.date);
     start.setHours(0, 0, 0, 0);

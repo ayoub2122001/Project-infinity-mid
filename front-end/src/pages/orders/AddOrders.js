@@ -3,9 +3,10 @@ import axios from 'axios';
 import "./Addorders.css";
 import { useNavigate } from "react-router-dom";
 function AddOrders() {
-  const api = "http://localhost:8080";
+  const api = "http://localhost:9000";
   const [nucommande, setUnCommande] = useState();
   const [nomClient, setNomClient] = useState('');
+  const [status, setStatus] = useState('');
   const [dateLivraison, setDateLivraison] = useState('');
   const [request, setRequest] = useState('');
   const [lignesCommande, setLignesCommande] = useState([]);
@@ -39,7 +40,7 @@ function AddOrders() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const montantTotal = lignesCommande.reduce((total, ligne) => total + parseFloat(ligne.montant_ligne), 0);
-    const commande = { id : nucommande, nom_client: nomClient, date_livraison: dateLivraison,date_commande: request, montant_total: montantTotal, lignes_commande: lignesCommande };
+    const commande = { id : nucommande, nom_client: nomClient, date_livraison: dateLivraison,status:status,date_commande: request, montant_total: montantTotal, lignes_commande: lignesCommande };
     if (nucommande && lignesCommande && request) {
       axios.post(`${api}/api/commandes`, commande)
       .then(response => console.log(response.data))
@@ -69,6 +70,7 @@ function AddOrders() {
             onChange={(e) => {
               setNomClient(e.target.value);
             }}
+            placeholder="Client Name"
           />
         </div>
         <div className="col-md-6">
@@ -84,6 +86,7 @@ function AddOrders() {
               setUnCommande(e.target.value);
             }}
             required
+            placeholder="N~Commande"
           />
         </div>
         <div className="col-md-6">
@@ -101,6 +104,17 @@ function AddOrders() {
           />
         </div>
         <div className="col-md-6">
+          <label for="status" className="form-label">
+          Status
+          </label>
+          <select className='form-select' name="id_article" value={status} onChange={(e) => {setStatus(e.target.value);}}>
+            <option value="">Choisissez un statut</option>
+              <option value="completed">Completed</option>
+              <option value="inProgress">In Progress</option>
+              <option value="payed">Payed</option>
+            </select>
+        </div>
+        <div className="col-md-6">
           <label for="inputDelivrey" className="form-label">
             Delivrey date
           </label>
@@ -115,35 +129,30 @@ function AddOrders() {
             required
           />
         </div>
-        <div className="row col-md-6 g-2 mt-3">
+        <div className="form-group col-md-12">
+        <label htmlFor="lignes_commande" className="form-label">Order Items:</label>
           {lignesCommande.map((ligne, index) => (
-          <div key={index} className="col-md-12 mt-3">
-            <select className='form-select' name="id_article" value={ligne.id_article} onChange={(e) => handleLigneCommandeChange(e, index)}>
+          <div key={index} className="ligne-commande d-flex justify-content-md-center mt-3 col">
+            <select className='form-select w-50 sel' name="id_article" value={ligne.id_article} onChange={(e) => handleLigneCommandeChange(e, index)}>
               <option value="">-- Choisissez un article --</option>
               {articles.map(article => (
                 <option key={article._id} value={article._id}>{article.nom_article} (${article.prix_unitaire})</option>
               ))}
             </select>
-            <div className="col-md-12">
-              <label for="inputQuantite" className="form-label">
-                Quantite
-              </label>
-                <input className="form-control" type="number" name="quantite" value={ligne.quantite} onChange={(e) => handleLigneCommandeChange(e, index)} />
+            <div>
+                <input className="form-control quan" type="number" name="quantite" value={ligne.quantite} onChange={(e) => handleLigneCommandeChange(e, index)} placeholder="Quantite" />
             </div>
-            <div className="col-md-12">
-              <label for="inputMontant" className="form-label">
-                Montant ligne
-              </label>
-              <input className="form-control" type="number" name="montant_ligne" value={ligne.quantite * articles.find(a=>a._id===ligne.id_article)?.prix_unitaire ||''} readOnly />
+            <div>
+              <input className="form-control" type="number" name="montant_ligne" value={ligne.quantite * articles.find(a=>a._id===ligne.id_article)?.prix_unitaire ||''} placeholder="Montant Total de ligne" readOnly />
             </div>
-            <div className="col-md-12 justify-content-md-center">
-              <button type="button" onClick={() => handleRemoveLigneCommande(index)} className="btn col-md-6 mt-3 btn-danger w-50">Supprimer</button>
+            <div>
+              <button type="button" onClick={() => handleRemoveLigneCommande(index)} className="btn d-flex justify-content-md-center  btn-danger">Supprimer</button>
             </div>
           </div>
         ))} 
         </div>
-        <div className="col-md-6 mt-5 w-50 justify-content-md-center">
-          <button type="button" onClick={handleAddLigneCommande} className="btn col-md-6 btn-primary">Ajouter une ligne de commande</button>
+        <div >
+          <button type="button" onClick={handleAddLigneCommande} className="btn btn-primary mt-4 ">Ajouter une ligne de commande</button>
         </div>
         <div className="col-md-6 mt-3 w-50">
             <button type="submit" className="btn col-md-6 btn-primary mt-4 w-50">

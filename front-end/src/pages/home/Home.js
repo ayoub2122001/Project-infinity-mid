@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import Card from "../../components/cards/Card";
 import "./home.css";
 function Home() {
-  const api = "http://localhost:8080";
-  const [commande, setCommande] = useState([])
-  // useEffect(() => {
-  //   Axios.get(`${api}/commande`)
-  //     .then(res => console.log(res.data))
-  // }, [])
+  const api = "http://localhost:9000";
+  const [commande, setCommande] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(`${api}/commande`);

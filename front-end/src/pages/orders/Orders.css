@@ -154,6 +154,29 @@ table{
     text-align: center;
 }
 
-/* .status-div{
-    position: relative;
-} */
+.status-div{
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.flash{
+    background-color: aqua;
+    width: 90%;
+    height: 90vh;
+    position: absolute;
+    top: 7%;
+    left: 5%;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    font-size: xx-large;
+}
+.ok{
+    background-color: greenyellow;
+    color: white;
+    border-radius: 7px;
+}
+a {
+    text-decoration: none;
+}

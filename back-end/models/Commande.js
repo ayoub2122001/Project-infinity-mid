@@ -15,6 +15,7 @@ const CommandeSchema = new Schema({
         type : Date
     },
     montant_total: Number,
+    status: String,
     lignes_commande: [{
         id_article: 
         {

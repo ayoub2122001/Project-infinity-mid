@@ -9,7 +9,8 @@ function Exponses() {
   const [search,setSearch] = useState('');
   const [date,setDate] = useState('');
   const [exponses,setExponses] = useState([]);
-  const api = "http://localhost:8080";
+  const [reloadExponses,setReloadExponses] = useState(false);
+  const api = "http://localhost:9000";
   const [add,setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
   const [exponseToEdit, setExponseToEdit] = useState(null);
@@ -31,28 +32,29 @@ function Exponses() {
       setAdd(false);
     })
     .catch((error) => console.log(error));
+    reloadExponses ? setReloadExponses(false) : setReloadExponses(true);
   }
   useEffect(() => {
     axios.get(`${api}/api/exponse`,{params : {search,date}})
     .then((response) => {
       setExponses(response.data);
     });
-  }, [search,date,exponses]);
+  }, [search,date,reloadExponses]);
   const deleteExponse = (id) =>{
     axios.delete(`${api}/api/exponse/${id}`)
     .then(res => console.log(res))
     .catch(error => console.log(error));
-    window.location.reload();
+    setExponses(exponses.filter((exponse) => exponse._id !== id));
   }
   const updateExponse = (exponse) => {
     axios.put(`${api}/api/exponse/${exponse._id}`, exponse)
     .then((response) => {
-      console.log(response.data);
-      // window.location.reload();
+      console.log('he is updated');
     })
     .catch((error) => console.log(error));
     setAdd(false);
     setExponseToEdit(null);
+    reloadExponses ? setReloadExponses(false) : setReloadExponses(true);
   }
   return (
     <div className='container mt-4'>
@@ -151,6 +153,8 @@ const NewExponse = ({addExponse, updateExponse, exponseToEdit, edit}) => {
             onChange={(e) => {
               setNameSupplier(e.target.value);
             }}
+            required
+            placeholder="Supplier Name"
           />
         </div>
         <div className="col-md-6 ">
@@ -165,6 +169,7 @@ const NewExponse = ({addExponse, updateExponse, exponseToEdit, edit}) => {
             onChange={(e) => {
               setTotal(e.target.value);
             }}
+            placeholder="Number Total"
           />
         </div>
         <div className="col-md-6">
@@ -181,7 +186,7 @@ const NewExponse = ({addExponse, updateExponse, exponseToEdit, edit}) => {
             }}
           />
         </div>
-        <div className="col-12">
+        <div className="col-12 mt-3">
           <button type="submit" className="btn btn-primary b-3">
           {edit ? 'Save Changes' : 'Add Exponse'}
           </button>

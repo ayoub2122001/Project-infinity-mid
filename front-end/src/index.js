@@ -1,7 +1,6 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createRoot } from "react-dom/client";
-import { useCookies } from "react-cookie";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -65,7 +64,7 @@ const router = createBrowserRouter([
         path: "invoice/:id",
         element: <Invoice />
       }
-    ]
+    ],
   }
 ]);
 // export default function App() {

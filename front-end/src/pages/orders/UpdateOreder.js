@@ -4,9 +4,11 @@ import "./Addorders.css";
 import { useNavigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 function UpdateOrders() {
-  const api = "http://localhost:8080";
+  const api = "http://localhost:9000";
   const { id } = useParams();
   const [nomClient, setNomClient] = useState("");
+  const [status, setStatus] = useState("");
+  const [updateRender, setUpdateRender] = useState(false);
   const [dateLivraison, setDateLivraison] = useState("");
   const [request, setRequest] = useState("");
   const [lignesCommande, setLignesCommande] = useState([]);
@@ -20,12 +22,13 @@ function UpdateOrders() {
     axios
       .get(`${api}/api/commandes/${id}`)
       .then((response) => {
-        const { nom_client, date_livraison, date_commande, lignes_commande } =
+        const { nom_client, date_livraison,status, date_commande, lignes_commande } =
           response.data;
         setNomClient(nom_client);
         setDateLivraison(date_livraison);
         setRequest(date_commande);
         setLignesCommande(lignes_commande);
+        setStatus(status);
       })
       .catch((error) => console.log(error));
   }, [api, id]);
@@ -73,11 +76,14 @@ function UpdateOrders() {
       montant_total: montantTotal,
       lignes_commande: lignesCommande,
     };
-    console.log(commande);
     axios
       .put(`${api}/api/commandes/${id}`, commande)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+        updateRender ? setUpdateRender(false) : setUpdateRender(true);
+      })
       .catch((error) => console.log(error));
+
     Navigate("/orders");
   };
   return (
@@ -93,6 +99,7 @@ function UpdateOrders() {
             id="nom_client"
             value={nomClient}
             onChange={(e) => setNomClient(e.target.value)}
+            placeholder="Nom Client"
           />
         </div>
         <div className='form-group col-md-6'>
@@ -116,6 +123,19 @@ function UpdateOrders() {
             value={request}
             onChange={(e) => setRequest(e.target.value)}
           />
+        </div>
+        <div className='form-group col-md-6'>
+          <label htmlFor="status" className="form-label">Status Order:</label>
+          <select
+                name="id_article"
+                className='form-select'
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="completed">Completed</option>
+                <option value="inProgress">In Progress</option>
+                <option value="payed">Payed</option>
+              </select>
         </div>
         <div className='form-group col-md-6'>
           <label htmlFor="lignes_commande" className="form-label">Order Items:</label>

@@ -10,11 +10,13 @@ function Incomes() {
   const [search,setSearch] = useState('');
   const [date,setDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [click,setClick] = useState(false);
   const [incomes,setIncomes] = useState([]);
-  const api = "http://localhost:8080";
+  const api = "http://localhost:9000";
   const [add,setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
   const [incomeToEdit, setIncomeToEdit] = useState(null);
+  const [reloadIncoms,setReloadIncoms] = useState(false);
   const handelClick =() =>{
     setAdd(true);
     setEdit(false);
@@ -33,13 +35,8 @@ function Incomes() {
       setAdd(false);
     })
     .catch((error) => console.log(error));
+    reloadIncoms ? setReloadIncoms(false) : setReloadIncoms(true);
   }
-  // useEffect(() => {
-  //   axios.get(`${api}/api/incomes`,{params : {search,date,endDate}})
-  //   .then((response) => {
-  //     setIncomes(response.data);
-  //   });
-  // }, [search,date,incomes,endDate]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,18 +54,20 @@ function Incomes() {
     };
 
     fetchData();
-  }, [search, date, endDate,incomes]);
+  }, [search, date, endDate,reloadIncoms]);
   const deleteIncomes = (id) =>{
+    setClick(false);
+    axios.delete(`${api}/api/incomes/${id}`)
+    .then(res => console.log(res))
+    .catch(error => console.log(error));
+    setIncomes(incomes.filter((income) => income._id !== id));
+  }
+  const updateIncome = (income) => {
     Swal.fire(
       'Good job!',
       'You clicked the button!',
       'success'
     );
-    axios.delete(`${api}/api/incomes/${id}`)
-    .then(res => console.log(res))
-    .catch(error => console.log(error));
-  }
-  const updateIncome = (income) => {
     axios.put(`${api}/api/incomes/${income._id}`, income)
     .then((response) => {
       console.log(response.data);
@@ -76,9 +75,18 @@ function Incomes() {
     .catch((error) => console.log(error));
     setAdd(false);
     setIncomeToEdit(null);
+    reloadIncoms ? setReloadIncoms(false) : setReloadIncoms(true);
+  }
+  const handelClickDelete = ()=>{
+    setClick(true);
   }
   return (
     <div className='container mt-4'>
+      {!click ? 
+        <div className="alert">
+          <span className="closebtn" onClick={()=>{handelClickDelete()}}>&times;</span> 
+          <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+        </div> : null}
         <div className='header'>
             <h1 className='Incomes-h1'>Incomes</h1>
             <div className='buttons'>
@@ -171,6 +179,7 @@ const NewIncome = ({addIncome, updateIncome, incomeToEdit, edit}) => {
             onChange={(e) => {
               setNameCostumer(e.target.value);
             }}
+            placeholder="Costumer Name"
           />
         </div>
         <div className="col-md-6 ">
@@ -185,6 +194,7 @@ const NewIncome = ({addIncome, updateIncome, incomeToEdit, edit}) => {
             onChange={(e) => {
               setTotal(e.target.value);
             }}
+            placeholder="Number Total"
           />
         </div>
         <div className="col-md-6">
@@ -201,7 +211,7 @@ const NewIncome = ({addIncome, updateIncome, incomeToEdit, edit}) => {
             }}
           />
         </div>
-        <div className="col-12">
+        <div className="col-12 mt-3">
           <button type="submit" className="btn btn-primary b-3">
           {edit ? 'Save Changes' : 'Add Income'}
           </button>

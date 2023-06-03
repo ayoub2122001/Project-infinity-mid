@@ -6,12 +6,11 @@ const Curd = () => {
   const [IncomesTotal,setIncomesTotal] = useState([]);
   const [ExponsesTotal,setExponsesTotal] = useState([]);
   const [CommandeTotal,setCommandeTotal] = useState([]);
-  const api = "http://localhost:8080";
+  const api = "http://localhost:9000";
   useEffect(() => {
     axios.get(`${api}/api/IncomesTotal`)
     .then((response) => {
       setIncomesTotal(response.data[0].total_amount);
-      console.log(response);
     });
   }, [IncomesTotal]);
   useEffect(() => {

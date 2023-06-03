@@ -4,7 +4,11 @@ import axios from 'axios';
 import { useParams } from "react-router-dom";
 const Invoice = () => {
   const date = new Date();
-  const api = "http://localhost:8080";
+  const [lignesCommande, setLignesCommande] = useState([]);
+  const [montantTotal,setMontantTotal] = useState();
+  const [nomClient,setNomClient] = useState('');
+  const [dateLivraison,setDateLivraison] = useState('');
+  const api = "http://localhost:9000";
   const { id } = useParams();
   const handlePrintInvoice = () => {
     const printContent = document.getElementById("invoice-content");
@@ -15,14 +19,13 @@ const Invoice = () => {
   };
   useEffect(() => {
     axios
-      .get(`${api}/api/articles`)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error));
-    axios
       .get(`${api}/api/commandes/${id}`)
       .then((response) => {
-        const { nom_client, date_livraison, date_commande, lignes_commande } =  response.data;
-        console.log(response.data);
+        const { nom_client, date_livraison,montant_total, date_commande, lignes_commande } =  response.data;
+        setLignesCommande(lignes_commande);
+        setMontantTotal(montant_total);
+        setNomClient(nom_client);
+        setDateLivraison(date_livraison);
       })
       .catch((error) => console.log(error));
   }, [api, id]);
@@ -40,8 +43,9 @@ const Invoice = () => {
       <div className="invoice-details">
         <div>
           <h3>Client:</h3>
-          <p>Nom du client</p>
+          <p>Nom du client : {nomClient}</p>
           <p>Ville : Tanger, Code postal : 90000</p>
+          <p>Date Livraison : {dateLivraison}</p>
         </div>
         <div>
           <h3>Entreprise:</h3>
@@ -53,43 +57,32 @@ const Invoice = () => {
       <table className="invoice-table">
         <thead>
           <tr>
-            <th>Description</th>
+            <th>Nom Produit</th>
             <th>Quantité</th>
             <th>Prix unitaire</th>
             <th>Total</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Produit 1</td>
-            <td>2</td>
-            <td>10€</td>
-            <td>20€</td>
-          </tr>
-          <tr>
-            <td>Produit 2</td>
-            <td>1</td>
-            <td>15€</td>
-            <td>15€</td>
-          </tr>
-          <tr>
-            <td>Produit 3</td>
-            <td>3</td>
-            <td>5€</td>
-            <td>15€</td>
-          </tr>
+        {lignesCommande.map((ligne) => (
+        <tr key={ligne.id}>
+          <td>{ligne.id_article.nom_article}</td>
+          <td>{ligne.quantite}</td>
+          <td>{ligne.id_article.prix_unitaire}</td>
+          <td>{ligne.montant_ligne}</td>
+        </tr>
+      ))}
         </tbody>
       </table>
       <div className="invoice-total">
-        <strong>Total: 50€</strong>
+        <strong>Total: {montantTotal}€</strong>
       </div>
-      <div className="invoice-buttons">
-        <button onClick={handlePrintInvoice}>Imprimer Facture</button>
-        <button onClick={handlePrintDeliveryNote}>Imprimer Note de Livraison</button>
+      <div className="buttons">
+        <button className='type-1' onClick={handlePrintInvoice}>Imprimer Facture</button>
+        <button className='type-2' onClick={handlePrintDeliveryNote}>Imprimer Note de Livraison</button>
       </div>
     </div>
   );
 };
 
 export default Invoice;
-

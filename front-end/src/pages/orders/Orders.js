@@ -11,7 +11,7 @@ function Orders() {
   const [date,setDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [commands, setCommands] = useState([]);
-  const api = "http://localhost:8080";
+  const api = "http://localhost:9000";
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,31 +29,43 @@ function Orders() {
     };
 
     fetchData();
-  }, [search, date, endDate,commands]);
-  // useEffect(() => {
-  //   axios.get(`${api}/api/commands`,{params : {search,date}}).then((response) => {
-  //     setCommands(response.data);
-  //   });
-  // }, [search,date,commands]);
+  }, [search, date, endDate]);
+  useEffect(()=>{
+
+  },[commands]);
+// -------------------------------------------------------deleteCommande----------------------------
   const  deleteCommande =   (id) =>{
+  
     Swal.fire(
       'Good job!',
       'You clicked the button!',
       'success'
-    )
+    )    
     axios.delete(`${api}/api/commands/${id}`)
-    .then(res => console.log(res))
-    .catch(error => console.log(error));
+    .then(res => {
+      console.log(res)
+    })
+    .catch(error => {
+      console.log(error)
+      }
+     );
+     setCommands(commands.filter((command) => command._id !== id));
   }
+  function getDeliveryColor(status) {
+    if (status ==="completed") {
+      return '#62CDFF';
+    } else if (status ==="inProgress") {
+      return '#7AA874';
+    } else {
+      return '#394867';
+    }
+  }
+
   return (
     <div className='container'>
         <div className='header '>
             <h1 className='Order-h1'>Orders</h1>
             <div className='buttons'>
-              <Link to='/invoice'>
-                <button className='type-1'>Generate Facture</button>
-              </Link>
-              <button className='type-1'>Generate  Delivery Note</button>
               <Link to='/addOrders'>
                 <button className='type-2'><span className='incon-span'><AiOutlinePlus /></span>New Orders</button>
               </Link>
@@ -63,7 +75,7 @@ function Orders() {
         <div className='filtring'>
           <input type='search' value={search} onChange={e=>{setSearch(e.target.value)}} placeholder='Search order' className='search-input'/>
           <div className='filters'>
-            <input type='date' value={date} onChange={e=>{setDate(e.target.value)}} />
+            <input type='date' value={date} onChange={e=>{setDate(e.target.value)}}/>
             <input type='date' value={endDate} onChange={e=>{setEndDate(e.target.value)}} />
           </div>
         </div>
@@ -89,7 +101,7 @@ function Orders() {
               <td>{command.lignes_commande.length}</td>
               <td>{command.date_livraison ? new Date(command.date_livraison).toLocaleDateString() : '-'}</td>
               <td>{command.montant_total}</td>
-              <td className='text-center'><div className='status-div'>In Progress</div></td>
+              <td className='text-center'><div style={{ backgroundColor: getDeliveryColor(command.status) }} className='status-div'>{command.status}</div></td>
               <td className='text-center'>
                 <button className='btn btn-danger' onClick={()=>deleteCommande(command._id)}><MdDeleteForever /></button>
                 <Link to={`/updateOrders/${command._id}`}>
@@ -98,7 +110,9 @@ function Orders() {
                 <Link to={`/invoice/${command._id}`}>
                   <button className='btn btn-success'>imprimer</button>
                 </Link>
+                
               </td>
+
             </tr>
           ))}
           </tbody>
