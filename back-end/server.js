@@ -53,6 +53,13 @@ app.get('/api/articles', (req, res) => {
     .then(articles => res.json(articles))
     .catch(error => console.log(error));
 });
+// post Article
+app.post('/api/articles', async (req, res) => {
+  const article = new ArticleModel(req.body);
+  article.save()
+    .then(article => res.json(article))
+    .catch(error => console.log(error));
+});
 // get the single Article
 app.get('/api/articles/:id', (req, res) => {
   ArticleModel.findById(req.params.id)

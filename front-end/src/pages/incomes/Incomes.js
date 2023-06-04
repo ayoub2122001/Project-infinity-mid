@@ -61,6 +61,7 @@ function Incomes() {
     .then(res => console.log(res))
     .catch(error => console.log(error));
     setIncomes(incomes.filter((income) => income._id !== id));
+    setClick(true);
   }
   const updateIncome = (income) => {
     Swal.fire(
@@ -82,7 +83,7 @@ function Incomes() {
   }
   return (
     <div className='container mt-4'>
-      {!click ? 
+      {click ? 
         <div className="alert">
           <span className="closebtn" onClick={()=>{handelClickDelete()}}>&times;</span> 
           <strong>Danger!</strong> Indicates a dangerous or potentially negative action.

@@ -30,9 +30,9 @@ function Orders() {
 
     fetchData();
   }, [search, date, endDate]);
-  useEffect(()=>{
+  // useEffect(()=>{
 
-  },[commands]);
+  // },[commands]);
 // -------------------------------------------------------deleteCommande----------------------------
   const  deleteCommande =   (id) =>{
   
@@ -60,7 +60,7 @@ function Orders() {
       return '#394867';
     }
   }
-
+  
   return (
     <div className='container'>
         <div className='header '>

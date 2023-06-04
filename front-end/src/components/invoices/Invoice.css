@@ -107,3 +107,12 @@ button:active{
         display: none;
     }
 }
+.span1{
+    align-items: center;
+    position: relative;
+    left: 100%;
+    width: 70px;
+    font-size: larger;
+    margin-left: 5px;
+    margin-top: 10px;
+}

@@ -19,6 +19,7 @@ import Incomes from "./pages/incomes/Incomes";
 import AddOrders from "./pages/orders/AddOrders";
 import UpdateOrders from "./pages/orders/UpdateOreder";
 import Invoice from "./components/invoices/Invoice";
+import InsertArticle from "./pages/articles/InsertArticle";
 const AppLayout = () => (
   <>
     <Navbar />
@@ -63,31 +64,16 @@ const router = createBrowserRouter([
       {
         path: "invoice/:id",
         element: <Invoice />
+      },
+      {
+        path: "insertArticle",
+        element: <InsertArticle />
       }
     ],
   }
 ]);
-// export default function App() {
-//   const [cookies,setCookies] = useCookies("access_token");
-//   const user = window.localStorage.getItem("token")
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route>
-//           { !user ? <Route index element={<Login />} />:
-//           <><Route path="exponses" element={<Exponses />} />
-//           <Route path="orders" element={<Orders />} />
-//           <Route path="income" element={<Income />} />
-//           <Route path="invoice" element={<Invoice />} />
-//           <Route path="home" element={<Home />} /> </>}
-//           {/* <Route path="/" element={<AppLayout />} /> */}
-//         </Route>
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
+
 
 createRoot(document.getElementById("root")).render(
   <RouterProvider router={router} />
-  // <App />
 );

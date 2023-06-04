@@ -1,6 +1,7 @@
 import React from "react";
 import {AiFillHome,AiOutlineShoppingCart} from "react-icons/ai";
 import {IoIosPaper,IoMdPeople} from "react-icons/io";
+import {FaProductHunt} from "react-icons/fa";
 
 export const SidebarData = [
   {
@@ -25,6 +26,12 @@ export const SidebarData = [
     title: "Exponses",
     path: "/exponses",
     icon: <IoMdPeople />,
+    cName: "nav-text",
+  },
+  {
+    title: "Articles",
+    path: "/insertArticle",
+    icon: <FaProductHunt />,
     cName: "nav-text",
   }
 ];

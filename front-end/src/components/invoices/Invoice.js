@@ -38,6 +38,9 @@ const Invoice = () => {
     <div className="invoice" id="invoice-content">
       <div className="invoice-header">
         <h2>Facture</h2>
+        <span>
+          <img className="span1" src={ require('../../images/infinity2.png')} alt="aaa"/>
+        </span>
         <span className="hide-url">Date: {date.toLocaleDateString()}</span>
       </div>
       <div className="invoice-details">

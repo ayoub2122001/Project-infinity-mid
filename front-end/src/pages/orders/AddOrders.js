@@ -51,7 +51,7 @@ function AddOrders() {
   };
   return (
     <>
-    <div className=" container">
+    <div className="container">
       <div>
         <h1 className="text-left form-yy">
           Add Orders{" "}
@@ -146,13 +146,13 @@ function AddOrders() {
               <input className="form-control" type="number" name="montant_ligne" value={ligne.quantite * articles.find(a=>a._id===ligne.id_article)?.prix_unitaire ||''} placeholder="Montant Total de ligne" readOnly />
             </div>
             <div>
-              <button type="button" onClick={() => handleRemoveLigneCommande(index)} className="btn d-flex justify-content-md-center  btn-danger">Supprimer</button>
+              <button type="button" onClick={() => handleRemoveLigneCommande(index)} className="btn d-flex justify-content-md-center btn-danger">Supprimer</button>
             </div>
           </div>
         ))} 
         </div>
         <div >
-          <button type="button" onClick={handleAddLigneCommande} className="btn btn-primary mt-4 ">Ajouter une ligne de commande</button>
+          <button type="button" onClick={handleAddLigneCommande} className="btn btn-primary mt-4">Ajouter une ligne de commande</button>
         </div>
         <div className="col-md-6 mt-3 w-50">
             <button type="submit" className="btn col-md-6 btn-primary mt-4 w-50">

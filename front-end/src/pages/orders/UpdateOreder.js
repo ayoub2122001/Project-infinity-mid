@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Addorders.css";
+import "./Updateorders.css";
 import { useNavigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 function UpdateOrders() {
@@ -8,12 +8,12 @@ function UpdateOrders() {
   const { id } = useParams();
   const [nomClient, setNomClient] = useState("");
   const [status, setStatus] = useState("");
-  const [updateRender, setUpdateRender] = useState(false);
   const [dateLivraison, setDateLivraison] = useState("");
   const [request, setRequest] = useState("");
   const [lignesCommande, setLignesCommande] = useState([]);
   const [articles, setArticles] = useState([]);
   const Navigate = useNavigate();
+  
   useEffect(() => {
     axios
       .get(`${api}/api/articles`)
@@ -80,10 +80,8 @@ function UpdateOrders() {
       .put(`${api}/api/commandes/${id}`, commande)
       .then((response) => {
         console.log(response.data);
-        updateRender ? setUpdateRender(false) : setUpdateRender(true);
       })
       .catch((error) => console.log(error));
-
     Navigate("/orders");
   };
   return (
@@ -127,7 +125,7 @@ function UpdateOrders() {
         <div className='form-group col-md-6'>
           <label htmlFor="status" className="form-label">Status Order:</label>
           <select
-                name="id_article"
+                name="Status"
                 className='form-select'
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
@@ -135,16 +133,16 @@ function UpdateOrders() {
                 <option value="completed">Completed</option>
                 <option value="inProgress">In Progress</option>
                 <option value="payed">Payed</option>
-              </select>
+          </select>
         </div>
-        <div className='form-group col-md-6'>
+        <div className='form-group col-md-12'>
           <label htmlFor="lignes_commande" className="form-label">Order Items:</label>
           {lignesCommande.map((ligne, index) => (
-            <div key={index} className='ligne-commande d-flex justify-content-md-center'>
+            <div key={index} className='ligne-commande d-flex justify-content-md-center mt-3 col'>
               <select
                 name="id_article"
-                className='form-select'
-                value={ligne.id_article}
+                className='form-select w-50 sel'
+                value={ligne.id_article._id}
                 onChange={(e) => handleLigneCommandeChange(e, index)}
               >
                 <option value="">Select an article</option>
@@ -156,24 +154,24 @@ function UpdateOrders() {
               </select>
               <input
                 type="number"
-                className="form-control"
+                className="form-control quan w-50"
                 name="quantite"
                 value={ligne.quantite}
                 onChange={(e) => handleLigneCommandeChange(e, index)}
               />
-              <span className='m-3 text-danger'>
+              <span className='text-danger total'>
                 {ligne.montant_ligne ? ligne.montant_ligne.toFixed(2) : ""}
               </span>
               <button
                 type="button"
-                className="btn d-flex justify-content-md-center mt-3 btn-danger"
+                className="btn d-flex justify-content-md-center btn-danger sel"
                 onClick={() => handleRemoveLigneCommande(index)}
               >
                 Remove Item
               </button>
             </div>
           ))}
-          <button className="btn col-md-6 btn-primary mt-4 w-50" type="button" onClick={handleAddLigneCommande}>
+          <button className="btn btn-primary mt-4" type="button" onClick={handleAddLigneCommande}>
             Add Item
           </button>
         </div>
