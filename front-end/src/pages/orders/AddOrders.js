@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./Addorders.css";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 function AddOrders() {
   const api = "http://localhost:9000";
   const [nucommande, setUnCommande] = useState();
@@ -41,11 +42,18 @@ function AddOrders() {
     e.preventDefault();
     const montantTotal = lignesCommande.reduce((total, ligne) => total + parseFloat(ligne.montant_ligne), 0);
     const commande = { id : nucommande, nom_client: nomClient, date_livraison: dateLivraison,status:status,date_commande: request, montant_total: montantTotal, lignes_commande: lignesCommande };
-    if (nucommande && lignesCommande && request) {
+    if (nucommande !== "" && lignesCommande !== "" && request !== "") {
       axios.post(`${api}/api/commandes`, commande)
       .then(response => console.log(response.data))
       .catch(error => console.log(error));
       Navigate('/orders');
+    }
+    else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Entre tout les donnees de commande !',
+      })
     }
     
   };
