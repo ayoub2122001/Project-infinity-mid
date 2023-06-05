@@ -35,7 +35,8 @@ function Incomes() {
       setAdd(false);
     })
     .catch((error) => console.log(error));
-    reloadIncoms ? setReloadIncoms(false) : setReloadIncoms(true);
+    setReloadIncoms(!reloadIncoms);
+    // reloadIncoms ? setReloadIncoms(false) : setReloadIncoms(true);
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -74,12 +75,13 @@ function Incomes() {
       console.log(response.data);
     })
     .catch((error) => console.log(error));
+    setReloadIncoms(!reloadIncoms);
     setAdd(false);
     setIncomeToEdit(null);
-    reloadIncoms ? setReloadIncoms(false) : setReloadIncoms(true);
+    // reloadIncoms ? setReloadIncoms(false) : setReloadIncoms(true);
   }
   const handelClickDelete = ()=>{
-    setClick(true);
+    setClick(false);
   }
   return (
     <div className='container mt-4'>

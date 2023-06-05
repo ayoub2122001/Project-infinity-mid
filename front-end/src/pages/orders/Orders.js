@@ -30,15 +30,15 @@ function Orders() {
 
     fetchData();
   }, [search, date, endDate]);
-  // useEffect(()=>{
+  useEffect(()=>{
 
-  // },[commands]);
+  },[commands]);
 // -------------------------------------------------------deleteCommande----------------------------
   const  deleteCommande =   (id) =>{
   
     Swal.fire(
       'Good job!',
-      'You clicked the button!',
+      'commande is deleted successfully !!',
       'success'
     )    
     axios.delete(`${api}/api/commands/${id}`)

@@ -54,6 +54,7 @@ function Exponses() {
     .catch((error) => console.log(error));
     setAdd(false);
     setExponseToEdit(null);
+    
     reloadExponses ? setReloadExponses(false) : setReloadExponses(true);
   }
   return (

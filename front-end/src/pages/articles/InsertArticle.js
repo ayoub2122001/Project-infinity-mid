@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./article.css";
+import Swal from "sweetalert2";
 const InsertArticle = () => {
   const [id, setId] = useState("");
   const [nomArticle, setNomArticle] = useState("");
@@ -16,12 +17,26 @@ const InsertArticle = () => {
     };
 
     try {
+      if (id !== "" && nomArticle !== "" && prixUnitaire !== "") {
       await axios.post(`${api}/api/articles`, articleData);
       console.log("Article inserted successfully!");
       // Reset form fields
       setId("");
       setNomArticle("");
       setPrixUnitaire("");
+      Swal.fire(
+        'Good job!',
+        'Article inserted successfully!',
+        'success'
+      )
+      }
+      else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Entre tout les donnees de article !',
+        })
+      }
     } catch (error) {
       console.error("Error inserting article:", error);
     }
